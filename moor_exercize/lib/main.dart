@@ -20,7 +20,6 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
-
   final String title;
 
   @override
@@ -28,12 +27,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
+  Future<List<String>> getFuture() async {
+    return Future.delayed(const Duration(seconds: 1), () => ['a', 'b']);
   }
 
   @override
@@ -42,24 +37,28 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
-        ),
-      ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
+        onPressed: () => null,
         child: Icon(Icons.add),
+      ),
+      body: Center(
+        child: FutureBuilder<List<String>>(
+            initialData: ['1', '2'],
+            future: getFuture(),
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return Text('no data');
+              } else {
+                return ListView.builder(
+                  itemCount: snapshot.data.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      title: Text('${snapshot.data[index]}'),
+                    );
+                  },
+                );
+              }
+            }),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
