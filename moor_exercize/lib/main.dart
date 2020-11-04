@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:moor_exercize/my_tables.dart';
 
 void main() {
   runApp(MyApp());
@@ -31,6 +32,10 @@ class _MyHomePageState extends State<MyHomePage> {
     return Future.delayed(const Duration(seconds: 1), () => ['a', 'b']);
   }
 
+  Stream<List<String>> getStream() {
+    return Future.delayed(const Duration(seconds: 1), () => ['a', 'b']).asStream();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,9 +47,10 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Icon(Icons.add),
       ),
       body: Center(
-        child: FutureBuilder<List<String>>(
-            initialData: ['1', '2'],
-            future: getFuture(),
+        child: FutureBuilder<List<Todo>>(
+            //initialData: ['1', '2'],
+            //future: getFuture(),
+            future: MyDatabase().allTodoEntries,
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
                 return Text('no data');

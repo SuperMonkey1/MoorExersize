@@ -47,4 +47,12 @@ class MyDatabase extends _$MyDatabase {
   /// you should bump this number whenever you change or add a table definition. Migrations are covered later in this readme.
   @override
   int get schemaVersion => 1;
+
+  /// loads all todo_ entries
+  Future<List<Todo>> get allTodoEntries => select(todos).get();
+
+  /// watches all todo_ entries in a given category. The stream will automatically emit new items whenever the underlying data changes.
+  Stream<List<Todo>> watchEntriesInCategory(Category c) {
+    return (select(todos)..where((t) => t.category.equals(c.id))).watch();
+  }
 }
