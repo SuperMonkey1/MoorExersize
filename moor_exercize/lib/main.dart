@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:moor/moor.dart';
 import 'package:moor_exercize/my_tables.dart';
 
 void main() {
@@ -43,7 +44,15 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => null,
+        onPressed: () {
+          MyDatabase().addTodo(
+            TodosCompanion(
+              title: Value('First Todo'),
+              content: Value('content'),
+            ),
+          );
+          setState(() {});
+        },
         child: Icon(Icons.add),
       ),
       body: Center(
@@ -59,7 +68,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   itemCount: snapshot.data.length,
                   itemBuilder: (context, index) {
                     return ListTile(
-                      title: Text('${snapshot.data[index]}'),
+                      title: Row(
+                        children: [
+                          Text('${snapshot.data[index].id} '),
+                          Text('${snapshot.data[index].title}'),
+                        ],
+                      ),
                     );
                   },
                 );
