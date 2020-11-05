@@ -67,11 +67,12 @@ class _MyHomePageState extends State<MyHomePage> {
                 return ListView.builder(
                   itemCount: snapshot.data.length,
                   itemBuilder: (context, index) {
+                    Todo _todo = snapshot.data[index];
                     return ListTile(
                       title: Row(
                         children: [
-                          Text('${snapshot.data[index].id} '),
-                          Text('${snapshot.data[index].title}'),
+                          Text('${_todo.id} '),
+                          Text('${_todo.title}'),
                         ],
                       ),
                     );
